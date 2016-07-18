@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="UTF-8">
+	</meta>
+	<#include "include/common.html">
+	<link rel="stylesheet" href="../resource/css/signin.css"/>
+	<title>签到</title>
+</head>
+<body>
+<#include "include/top.html">
+<div class="main">
+	<a class="sign-btn" href="javascript:;" <#if !signInInfo.haveSignInToday>id="doSignIn"</#if>>
+		<span class="week">
+			<span id="week-data">${signInInfo.week!''}</span>
+			<span id="day-data">${signInInfo.curDay!''}</span>
+		</span>
+		<span class="sign-info" id="sign-info">
+			<i class="icon icon-signin"></i><span class= "sign-tit"><#if signInInfo.haveSignInToday>已签到<#else>签到</#if></span>
+		</span>
+		<span class="sign-days">
+			<span id="sign-days">${signInInfo.userSignInCount!''}</span>
+			<span class="sign-days-day">Day</span>
+		</span>
+	</a>
+	
+	
+</div>
+<#include "include/footer.html">
+<script type="text/javascript" src="../resource/js/signin.js"></script>
+<link rel="stylesheet" href="../resource/css/register.css"/>
+</body>
+</html>

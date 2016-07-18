@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="UTF-8">
+	</meta>
+	<#include "include/common.html">
+	<title>登录</title>
+</head>
+<body>
+<#include "include/top.html">
+<div class="main">
+	<div class="register">
+		<form class="u-form">
+			<div class="form-item">
+				<div class="item-tit">帐号：</div>
+				<div class="item-input"><input type="text" name="account" checkData="{rq:true, msg:'请输入正确的帐号'}" placeholder="请输入用户名或邮箱"></div>
+				<div class="clear"></div>
+			</div>
+			<div class="form-item">
+				<div class="item-tit">登录密码：</div>
+				<div class="item-input"><input type="password" name="password" checkData="{rq:true, msg:'请输入正确的密码'}" placeholder="请输入密码"></div>
+				<div class="clear"></div>
+			</div>
+			<div id="checkCode-area">
+				<#if checkCode??>
+					<div class="form-item">
+						<div class="item-tit">验证码：</div>
+						<div class="item-input"><input type="text" name="checkCode" class="check-code" checkData="{rq:true}" placeholder="请输入验证码"></div>
+						<div class="check-code"><a href="javascript:void(0)" id="refreshCheckCode"><img src="checkCode"></a></div>
+						<div class="clear"></div>
+					</div>
+				</#if>
+			</div>
+			<div class="form-item">
+				<div class="item-tit"></div>
+				<div class="item-input"><label><input type="checkbox" class="remember-me" name="rememberMe" value="1"><span class="remember-info">记住我的登录信息<span class="remember-info-red">（请勿在公用电脑或网吧使用此项）</span></span></label></div>
+				<div class="clear"></div>
+			</div>
+			<div class="form-item">
+				<div class="item-tit"></div>
+				<div class="item-input"><a href="javascript:void(0)" class="btn">登录</a></div>
+				<div class="clear"></div>
+			</div>
+		</form>
+	</div>
+</div>
+<#include "include/footer.html">
+<script type="text/javascript" src="../resource/js/user.login.js"></script>
+<link rel="stylesheet" href="../resource/css/register.css"/>
+</body>
+</html>
