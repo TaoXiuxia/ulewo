@@ -21,7 +21,9 @@
 			<a href="javacsript:;" class="search-btn">搜&nbsp;&nbsp;索</a>	
 		</div>
 		<div class="header-user-info">
-		fsdfsdf
+			<#if Session["session_user_key"]??>
+				${session_user_key.userName}, 你好！				
+			</#if>
 		</div>
 		<div class="clear"></div>
 	</div>

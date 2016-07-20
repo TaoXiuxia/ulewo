@@ -1,7 +1,5 @@
 package com.ulewo.po.model;
 
-import java.util.Date;
-
 public class SignInInfo{
 	
 	/**

@@ -34,14 +34,10 @@ public class UserServiceImpl implements UserService {
 
 	public void register(User user) throws BusinessException {
 		
-		logger.info("============1.1===============");
-		
 		// 校验Email，用户名，密码是否合法
 		String username = user.getUserName();
 		String email = user.getEmail();
 		String password = user.getPassword();
-		
-		logger.info("============1.2===============");
 		
 		if (StringTools.isEmpty(username) || StringTools.isEmpty(email) || StringTools.isEmpty(password)
 				|| username.length() > Constants.LENGTH_20 || password.length() > Constants.LENGTH_16
@@ -49,34 +45,20 @@ public class UserServiceImpl implements UserService {
 				|| !StringTools.checkUsername(username) || !StringTools.checkPassword(password)) {
 			throw new BusinessException("输入参数不合法");
 		}
-		
-		logger.info("============1.3===============");
-		
 		// 校验用户是否已经存在
 		if (this.findUserByUserName(user.getUserName()) != null) {
 			throw new BusinessException("用户已经存在");
 		}
-
-		logger.info("============1.4===============");
-		
 		// 校验Email是否已经存在
 		if (this.findUserByEmail(user.getEmail()) != null) {
 			throw new BusinessException("邮箱已存在");
 		}
-		
-		logger.info("============1.5===============");
-		
 		user.setPassword(StringTools.encodeByMD5(password));
 		user.setUserIcon(Constants.user_img_path_user_icon + ((int) (Math.random() * 10) + 1) + ".png");
 		user.setUserBg(Constants.user_img_path_user_bg + ((int) (Math.random() * 10) + 1) + ".png");
 		Date curDate = new Date();
 		user.setRegisterTime(curDate);
 		user.setLastLoginTime(curDate);
-		
-		
-		logger.info("============222===============");
-		
-		
 		this.userMapper.insert(user);
 	}
 
@@ -100,26 +82,26 @@ public class UserServiceImpl implements UserService {
 		return null;
 	}
 
-	public User login(String account, String password) throws BusinessException {
-		if(StringTools.isEmpty(account)||StringTools.isEmpty(password)){
+	public User login(String account, String password, Boolean encodePwd) throws BusinessException {
+		if (StringTools.isEmpty(account) || StringTools.isEmpty(password)) {
 			throw new BusinessException("输入参数不合法");
 		}
-		
-		User user =null;
-		
-		//邮箱登录
-		if(account.contains("@")){
-			user=this.findUserByEmail(account);
-		}else{  //用户名登录
-			user=this.findUserByUserName(account);
+		User user = null;
+		// 邮箱登录
+		if (account.contains("@")) {
+			user = this.findUserByEmail(account);
+		} else { // 用户名登录
+			user = this.findUserByUserName(account);
 		}
-		if(null==user){
+		if (null == user) {
 			throw new BusinessException("用户不存在");
 		}
-		if(!user.getPassword().equals(StringTools.encodeByMD5(password))){
+		if(encodePwd){
+			password = StringTools.encodeByMD5(password);
+		}
+		if (!user.getPassword().equals(password)) {
 			throw new BusinessException("密码错误");
 		}
-		
 		return user;
 	}
 
@@ -177,7 +159,10 @@ public class UserServiceImpl implements UserService {
 	 */
 	public void addMark(Integer userId, Integer mark) throws BusinessException {
 		// TODO Auto-generated method stub
-		
+	}
+
+	public void update(User user) {
+		// TODO Auto-generated method stub
 	}
 	
 	/**
@@ -197,6 +182,8 @@ public class UserServiceImpl implements UserService {
 		}
 		return randomCode.toString();
 	}
+
+	
 
 
 }

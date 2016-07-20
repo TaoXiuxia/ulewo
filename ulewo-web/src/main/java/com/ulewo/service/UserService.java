@@ -17,7 +17,7 @@ public interface UserService {
 	 * @return TODO
 	 * @throws BusinessException
 	 */
-	public  User login(String account, String password) throws BusinessException;
+	public  User login(String account, String password, Boolean encodePwd ) throws BusinessException;
 	
 	/**
 	 * 发送验证码
@@ -42,4 +42,6 @@ public interface UserService {
 	 * @throws BusinessException
 	 */
 	public void addMark(Integer userId, Integer mark)throws BusinessException;
+
+	public void update(User user);
 }

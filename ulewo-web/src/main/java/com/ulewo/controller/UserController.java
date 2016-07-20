@@ -73,14 +73,6 @@ public class UserController {
 				result.setResponseCode(ResponseCode.CODEERROR);
 			} else {
 				userService.register(user);
-				
-				
-				logger.info("===============1111==============");
-				logger.info("user.getUserIcon()--> {}",user.getUserIcon());
-				logger.info("user.getUserName()--> {}",user.getUserName());
-				logger.info("user.getUserId()--> {}",user.getUserId());
-			
-				
 				SessionUser sessionUser =new SessionUser();
 				sessionUser.setUserId(user.getUserId());
 				sessionUser.setUserIcon(user.getUserIcon());
@@ -133,51 +125,49 @@ public class UserController {
 		try {
 			String sessionCheckCode = String.valueOf(session.getAttribute(Constants.check_code_key));
 			if (!StringTools.isEmpty(sessionCheckCode) && !sessionCheckCode.equalsIgnoreCase(checkCode)
-					&& null!=session.getAttribute(Constants.SESSION_ERROR_LOGIN_COUNT)
-					&& (Integer)session.getAttribute(Constants.SESSION_ERROR_LOGIN_COUNT) >= Constants.MAX_LOGIN_ERROR_COUNT) {
+					&& null != session.getAttribute(Constants.SESSION_ERROR_LOGIN_COUNT) 
+					&& (Integer) session.getAttribute(Constants.SESSION_ERROR_LOGIN_COUNT) >= Constants.MAX_LOGIN_ERROR_COUNT) {
 				result.setErrorMsg("验证码错误");
 				result.setResponseCode(ResponseCode.CODEERROR);
 				return result;
 			}
-			
-			User user = userService.login(account, password);
+
+			User user = userService.login(account, password, true);
 			SessionUser sessionUser = new SessionUser();
 			sessionUser.setUserId(user.getUserId());
 			sessionUser.setUserIcon(user.getUserIcon());
 			sessionUser.setUserName(user.getUserName());
-			session.setAttribute(Constants.SESSION_USER_KEY, session);
-			session.setAttribute(Constants.SESSION_ERROR_LOGIN_COUNT, 0);
-			session.removeAttribute(Constants.check_code_key);
-			session.invalidate();
-			//记住登录状态
-			if(REMEMBERME.equals(rememberMe)){
-				//自动登录，保存用户名密码到Cookie
-				String infor=URLEncoder.encode(account.toString(), "utf-8")+"===|"+StringTools.encodeByMD5(user.getPassword());
-				//清除之前的Cookie信息
-				Cookie cookie=new Cookie("cookieInfo",null);
+			session.setAttribute(Constants.SESSION_USER_KEY, sessionUser);
+
+			// 记住登录状态
+			if (REMEMBERME.equals(rememberMe)) {
+				// 自动登录，保存用户名密码到Cookie
+				String infor = URLEncoder.encode(account.toString(), "utf-8") + "|" + user.getPassword();
+				// 清除之前的Cookie信息
+				Cookie cookie = new Cookie(Constants.COOKIE_USER_INFO, null);
 				cookie.setPath("/");
 				cookie.setMaxAge(0);
-				//将用户信息保存到Cookie中
-				Cookie cookieInfo = new Cookie("cookieInfo",infor);
+				// 将用户信息保存到Cookie中
+				Cookie cookieInfo = new Cookie(Constants.COOKIE_USER_INFO, infor);
 				cookieInfo.setPath("/");
-				//设置最大生命周期为1年
+				// 设置最大生命周期为1年
 				cookieInfo.setMaxAge(31536000);
 				response.addCookie(cookieInfo);
-			}else{
-				Cookie cookie=new Cookie("cookieInfo",null);
+			} else {
+				Cookie cookie = new Cookie(Constants.COOKIE_USER_INFO, null);
 				cookie.setPath("/");
 				cookie.setMaxAge(0);
 			}
 		} catch (BusinessException e) {
-			if(null==session.getAttribute(Constants.SESSION_ERROR_LOGIN_COUNT)){
+			if (null == session.getAttribute(Constants.SESSION_ERROR_LOGIN_COUNT)) {
 				session.setAttribute(Constants.SESSION_ERROR_LOGIN_COUNT, 1);
-			}else{
-				session.setAttribute(Constants.SESSION_ERROR_LOGIN_COUNT, (Integer)session.getAttribute(Constants.SESSION_ERROR_LOGIN_COUNT)+1);
+			} else {
+				session.setAttribute(Constants.SESSION_ERROR_LOGIN_COUNT, (Integer) session.getAttribute(Constants.SESSION_ERROR_LOGIN_COUNT) + 1);
 			}
-			
-			if((Integer)session.getAttribute(Constants.SESSION_ERROR_LOGIN_COUNT) >= Constants.MAX_LOGIN_ERROR_COUNT){
+
+			if ((Integer) session.getAttribute(Constants.SESSION_ERROR_LOGIN_COUNT) >= Constants.MAX_LOGIN_ERROR_COUNT) {
 				result.setResponseCode(ResponseCode.MOREMAXLOGINCOUNT);
-			}else{
+			} else {
 				result.setResponseCode(ResponseCode.BUSINESSERROR);
 			}
 			result.setErrorMsg(e.getMessage());
@@ -196,9 +186,9 @@ public class UserController {
 	 * @param session
 	 * @return
 	 */
-	@RequestMapping(value="findpwd")
-	public ModelAndView findpwd(HttpServletRequest request, HttpSession session){
-		ModelAndView view =new  ModelAndView("/page/findpwd");
+	@RequestMapping(value = "findpwd")
+	public ModelAndView findpwd(HttpServletRequest request, HttpSession session) {
+		ModelAndView view = new ModelAndView("/page/findpwd");
 		return view;
 	}
 	
@@ -211,53 +201,46 @@ public class UserController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value="sendCheckCode.do")
-	public AjaxResponse<Object> sendCheckCode(HttpSession session, HttpServletResponse response, String email, String checkCode){
+	@RequestMapping(value = "sendCheckCode.do")
+	public AjaxResponse<Object> sendCheckCode(HttpSession session, HttpServletResponse response, String email, String checkCode) {
 		AjaxResponse<Object> result = new AjaxResponse<Object>();
 		result.setResponseCode(ResponseCode.SUCCESS);
 		try {
 			String sessionCheckCode = session.getAttribute(Constants.check_code_key).toString();
-			if(!sessionCheckCode.equalsIgnoreCase(checkCode)){
+			if (!sessionCheckCode.equalsIgnoreCase(checkCode)) {
 				result.setErrorMsg("验证码错误");
 				result.setResponseCode(ResponseCode.CODEERROR);
 				return result;
-			}else{
+			} else {
 				this.userService.sendCheckCode(email);
 			}
-		} catch(BusinessException e){
+		} catch (BusinessException e) {
 			result.setResponseCode(ResponseCode.BUSINESSERROR);
 			result.setErrorMsg(e.getMessage());
-			logger.error("发送验证码失败，邮箱：{}",email,e);
-		}catch (Exception e) {
+			logger.error("发送验证码失败，邮箱：{}", email, e);
+		} catch (Exception e) {
 			result.setResponseCode(ResponseCode.SERVERERROR);
 			result.setErrorMsg(ResponseCode.SERVERERROR.getDesc());
-			logger.error("发送验证码失败，邮箱：{}",email,e);
+			logger.error("发送验证码失败，邮箱：{}", email, e);
 		}
 		return result;
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "resetpwd.do")
-	public AjaxResponse<Object> resetpwdDo(String email, String password, String checkCode){
+	public AjaxResponse<Object> resetpwdDo(String email, String password, String checkCode) {
 		AjaxResponse<Object> result = new AjaxResponse<Object>();
 		result.setResponseCode(ResponseCode.SUCCESS);
 		try {
-			logger.info("=================");
-			logger.info("email --> {}", email);
-			logger.info("password --> {}",password);
-			logger.info("checkCode --> {}",checkCode);
-			logger.info("===================");
-			
 			this.userService.resetPwd(email, password, checkCode);
-			
-		} catch(BusinessException e){
+		} catch (BusinessException e) {
 			result.setResponseCode(ResponseCode.BUSINESSERROR);
 			result.setErrorMsg(e.getMessage());
-			logger.error("修改密码失败，邮箱：{}",email,e);
-		}catch (Exception e) {
+			logger.error("修改密码失败，邮箱：{}", email, e);
+		} catch (Exception e) {
 			result.setResponseCode(ResponseCode.SERVERERROR);
 			result.setErrorMsg(ResponseCode.SERVERERROR.getDesc());
-			logger.error("修改密码失败，邮箱：{}",email,e);
+			logger.error("修改密码失败，邮箱：{}", email, e);
 		}
 		return result;
 	}
@@ -270,17 +253,17 @@ public class UserController {
 	 * @throws IOException
 	 */
 	@RequestMapping(value = "checkCode")
-	public void checkCode(HttpServletRequest request,HttpServletResponse response , HttpSession session) throws IOException{
+	public void checkCode(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException {
 		ConfigurableCaptchaService cs = new ConfigurableCaptchaService();
-        cs.setColorFactory(new SingleColorFactory(new Color(25, 60, 170)));
-        cs.setFilterFactory(new CurvesRippleFilterFactory(cs.getColorFactory()));
+		cs.setColorFactory(new SingleColorFactory(new Color(25, 60, 170)));
+		cs.setFilterFactory(new CurvesRippleFilterFactory(cs.getColorFactory()));
 
-        response.setHeader("Pragma", "no-cache");
-        response.setHeader("Cache-Control", "no-cache");
-        response.setDateHeader("Expires", 0);
-        response.setContentType("image/jpeg");
-        
-        String code = EncoderHelper.getChallangeAndWriteImage(cs, "png", response.getOutputStream());
-        session.setAttribute(Constants.check_code_key, code);
+		response.setHeader("Pragma", "no-cache");
+		response.setHeader("Cache-Control", "no-cache");
+		response.setDateHeader("Expires", 0);
+		response.setContentType("image/jpeg");
+
+		String code = EncoderHelper.getChallangeAndWriteImage(cs, "png", response.getOutputStream());
+		session.setAttribute(Constants.check_code_key, code);
 	}
 }

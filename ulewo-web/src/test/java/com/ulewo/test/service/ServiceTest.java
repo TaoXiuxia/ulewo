@@ -41,7 +41,7 @@ public class ServiceTest extends AbstractTestNGSpringContextTests{
 	@Test
 	public void testLogin() {
 		try {
-			User user = UserService.login("dehua@qq.com", "1213456");
+			User user = UserService.login("dehua@qq.com", "1213456", true);
 			logger.info(user.getUserName());
 		} catch (BusinessException e) {
 			e.printStackTrace();

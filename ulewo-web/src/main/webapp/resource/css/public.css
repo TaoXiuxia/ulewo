@@ -123,9 +123,10 @@ a:hover i.icon-re{background-position:-35px -796px;}
 .icon-post-knowledge{width: 35px;height: 35px;display: inline-block;background-position:0px -1160px;}
 .icon-mark{width: 15px;height: 15px;display: inline-block;background-position:0px -1078px;}
 .icon-post-ask{width: 35px;height: 35px;display: inline-block;background-position:0px -1110px;}
+
 /*********tag********/
 ul.tag{list-style: none;height: 40px;border-bottom: 1px solid #B3B4B3}
-ul.tag li{float: left;text-align: center;}
+ul.tag li{float: left; text-align: center;}
 ul.tag li a{text-decoration: none;display:inline-block;padding: 0px 15px;color: #9A9B9A;font-size: 14px;line-height: 39px;}
 ul.tag li.active{border: 1px solid #B3B4B3;border-bottom:1px solid #fff;border-radius:5px 5px 0px 0px;}
 ul.tag li.active a{color: #4590CE;}

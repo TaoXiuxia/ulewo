@@ -16,4 +16,9 @@ public class Constants {
 	public static final String SESSION_ERROR_LOGIN_COUNT="session_error_login_count";
 	
 	public static final int MAX_LOGIN_ERROR_COUNT = 3; 
+	
+	public static final int CONTINUESIGNINCOUNT = 7;
+	
+	public static final String COOKIE_USER_INFO = "cookie4UserInfo";
+	
 }

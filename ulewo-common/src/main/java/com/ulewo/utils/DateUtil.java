@@ -9,7 +9,6 @@ import java.util.Map;
 
 import com.ulewo.po.enums.DateTimePatternEnum;
 
-
 public class DateUtil {
 
 	/** 锁对象 **/
@@ -18,7 +17,8 @@ public class DateUtil {
 	/** 存放不同的日期模版格式的sdf的Map **/
 	private static Map<String, ThreadLocal<SimpleDateFormat>> sdfMap = new HashMap<String, ThreadLocal<SimpleDateFormat>>();
 
-	private static final String[] WEEKCN = {"周日","周一","周二","周三","周四","周五","周六"};
+	private static final String[] WEEKCN = { "周日", "周一", "周二", "周三", "周四", "周五", "周六" };
+
 	/**
 	 * 返回一个ThreadLocal的sdf，每个线程只会new一个sdf
 	 */
@@ -50,86 +50,68 @@ public class DateUtil {
 	}
 
 	/**
-	 * 使用ThreadLocal<SimpleDateFormat>类获取SimpleDateFormat，这样两个线程只会有一个SimpleDateFormat
+	 * 使用ThreadLocal
+	 * <SimpleDateFormat>类获取SimpleDateFormat，这样两个线程只会有一个SimpleDateFormat
+	 * 
 	 * @param date
 	 * @param pattern
 	 * @return
 	 */
-	public static String format (Date date ,String pattern){
+	public static String format(Date date, String pattern) {
 		return getSdf(pattern).format(date);
 	}
-	
-	public static Date parse(String dateStr, String pattern) throws ParseException{
+
+	public static Date parse(String dateStr, String pattern) throws ParseException {
 		return getSdf(pattern).parse(dateStr);
 	}
-	
+
 	/**
 	 * 获取某年某月第几天是星期几, 这个月有多少天
+	 * 
 	 * @param year
 	 * @param month
 	 * @param day
 	 * @return
 	 */
-	public static Map<String,Integer> getTotalDayAndFirstWeekDay4Month(int year,int month,int day){
-		Map<String,Integer>result=new HashMap<String, Integer>();
-		//获取一个月有多少天
-		Calendar cal=Calendar.getInstance();
+	public static Map<String, Integer> getTotalDayAndFirstWeekDay4Month(int year, int month, int day) {
+		Map<String, Integer> result = new HashMap<String, Integer>();
+		// 获取一个月有多少天
+		Calendar cal = Calendar.getInstance();
 		cal.set(Calendar.YEAR, year);
-		cal.set(Calendar.MONDAY, month-1);
+		cal.set(Calendar.MONDAY, month - 1);
 		int dateOfMonth = cal.getActualMaximum(Calendar.DATE);
-		
-		//获取当前日期是星期几
-		cal.set(Calendar.DATE,day);
+
+		// 获取当前日期是星期几
+		cal.set(Calendar.DATE, day);
 		int week = cal.get(Calendar.DAY_OF_WEEK);
-		
+
 		result.put("todayDay", dateOfMonth);
 		result.put("firstWeekDay", week);
 		return result;
-	} 
-	
-	public static boolean beforeNowDate(String date){
+	}
+
+	public static boolean beforeNowDate(String date) {
 		try {
-			Calendar c=Calendar.getInstance();
+			Calendar c = Calendar.getInstance();
 			c.add(Calendar.DAY_OF_MONTH, 1);
-			Date curDate =c.getTime();
-			Date d=parse(date,DateTimePatternEnum.YYYY_MM_DD.getPattern());
+			Date curDate = c.getTime();
+			Date d = parse(date, DateTimePatternEnum.YYYY_MM_DD.getPattern());
 			boolean flag = d.before(curDate);
 			return flag;
 		} catch (Exception e) {
 			return false;
 		}
 	}
-	
-	public static int getWeek(Date date){
-		Calendar c= Calendar.getInstance();
+
+	public static int getWeek(Date date) {
+		Calendar c = Calendar.getInstance();
 		c.setTime(date);
-		int w=c.get(Calendar.DAY_OF_WEEK)-1;
+		int w = c.get(Calendar.DAY_OF_WEEK) - 1;
 		return w;
 	}
-	
-	public static String getWeekCN(Date date){
-		int w=getWeek(date);
+
+	public static String getWeekCN(Date date) {
+		int w = getWeek(date);
 		return WEEKCN[w];
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

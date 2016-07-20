@@ -14,10 +14,12 @@ public class UlewoContextLoaderListener extends ContextLoaderListener {
 	@Override
 	public void contextInitialized(ServletContextEvent event) {
 		super.contextInitialized(event);
-		//初始化SpringContextUtil的context
+		
+		// 初始化SpringContextUtil的context
 		ServletContext context = event.getServletContext();
 		ApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(context);
 		SpringContextUtil.setContext(ctx);
-		//项目初始化时需要做的事情
+		// 设置服务器相关路径
+		//ServerUtils.setRealPath(context.getRealPath(""));
 	}
 }

@@ -296,19 +296,11 @@ $.extend(ulewo, {
 		var showLoad = config.showLoad == null ? true : config.showLoad;
 		if (showLoad) {
 			var d = this.tipMsg({
-				type : "loading",
-				content : "加载中......"
+				type : "loading", content : "加载中......"
 			});
 		}
 		var that = this;
-		$.ajax({
-			async : async,
-			cache : false,
-			type : 'POST',
-			dataType : "json",
-			data : data,
-			url : url,
-			success : function(response) {
+		$.ajax({async : async, cache : false, type : 'POST', dataType : "json", data : data, url : url, success : function(response) {
 				if (showLoad) {
 					d.remove();
 				}
@@ -332,6 +324,7 @@ $.extend(ulewo, {
 			}
 		});
 	},
+	
 	tag : function(config) {
 		var id = config.id;
 		var contentClass = config.contentClass;
@@ -356,6 +349,7 @@ $.extend(ulewo, {
 			fun($(this).attr("index"));
 		});
 	},
+	
 	pagination : function(config) {
 		var id = config.pagePanelId;
 		var page = config.pageObj;
@@ -428,6 +422,7 @@ $.extend(ulewo, {
 		}
 		$("<li><span>总共" + countTotal + "条记录，当前" + curPageNo + "/" + pageTotal + "页</span></li>").appendTo(ulPanle)
 	},
+	
 	showEmotion : function(curObj, textarea) {
 		var d = this.popDialog({
 			width : 300,
@@ -438,13 +433,14 @@ $.extend(ulewo, {
 		var emotions = ulewo.emotion_data;
 		for (var i = 0, _len = emotions.length; i < _len; i++) {
 			var item = $("<div data=" + emotions[i] + " class='emotion' title=" + emotions[i] + "><img src='" + ulewo.absolutePath 
-					+ "/resource/images/emotions/" + i + ".gif'></div>").appendTo(emotion_panel).bind("click", function() {
-						d.close();
-						textarea.val(textarea.val() + $(this).attr("data")).focus();
-					});
+				+ "/resource/images/emotions/" + i + ".gif'></div>").appendTo(emotion_panel).bind("click", function() {
+					d.close();
+					textarea.val(textarea.val() + $(this).attr("data")).focus();
+				});
 		}
 		d.content(emotion_panel);
 	},
+	
 	showAtUser : function(curObj, textarea) {
 		var d = this.popDialog({
 			width : 300,
@@ -452,48 +448,25 @@ $.extend(ulewo, {
 			obj : curObj
 		});
 		var at_panel = $("<div></div>")
-		ulewo
-				.ajaxRequest({
-					url : ulewo.absolutePath
-							+ "/user/loadFocus.action",
-					showLoad : false,
-					fun : function(res) {
-						var content = "";
-						var list = res.data;
-						var _len = list.length;
-						if (_len == 0) {
-							content = "没有关注的用户";
-						} else {
-							content = at_panel;
-							for (var i = 0, item; i < _len,
-									item = list[i]; i++) {
-								$(
-										"<a href='javascript:;' class='at_user'>"
-												+ item.friendUserName
-												+ "</a>")
-										.appendTo(content)
-										.click(
-												function() {
-													d.close();
-													textarea
-															.val(
-																	textarea
-																			.val())
-															.focus()
-															.val(
-																	textarea
-																			.val()
-																			+ "@"
-																			+ $(
-																					this)
-																					.text()
-																			+ " ");
-												});
-							}
-						}
-						d.content(content);
+		ulewo.ajaxRequest({url : ulewo.absolutePath + "/user/loadFocus.action", showLoad : false, fun : function(res) {
+				var content = "";
+				var list = res.data;
+				var _len = list.length;
+				if (_len == 0) {
+					content = "没有关注的用户";
+				} else {
+					content = at_panel;
+					for (var i = 0, item; i < _len, item = list[i]; i++) {
+						$("<a href='javascript:;' class='at_user'>" + item.friendUserName + "</a>").appendTo(content).click(
+							function() {
+								d.close();
+								textarea.val(textarea.val()).focus().val(textarea.val() + "@" + $(this).text()+ " ");
+							});
 					}
-				});
+				}
+				d.content(content);
+			}
+		});
 	},
 	showImage : function(curIndex, imgArry) {
 		var dialogId = "dialog-image-id";
@@ -506,10 +479,8 @@ $.extend(ulewo, {
 	},
 	nextImg : function(dialogId, curIndex, imgArry) {
 		var d = dialog.get(dialogId);
-		d
-				.content('<div class="dialog-image-load" style="width:100px;text-align:center"><img src="'
-						+ ulewo.absolutePath
-						+ '/resource/images/loading.gif"><div>');
+		d.content('<div class="dialog-image-load" style="width:100px;text-align:center"><img src="'
+						+ ulewo.absolutePath + '/resource/images/loading.gif"><div>');
 		var src = imgArry[curIndex];
 		var imgReal = new Image();
 		var imgSrc = src;
@@ -555,44 +526,32 @@ $.extend(ulewo, {
 					+ realSrc + "'></a>";
 			if (curIndex != 0) {
 				html = html
-						+ "<a href='javascript:;' type='pre' dialogId="
-						+ dialogId
-						+ "  imgArry="
-						+ imgArry
-						+ "  curIndex="
-						+ curIndex
-						+ "  class='dialog-image-change pre' title='上一张'></a>";
+						+ "<a href='javascript:;' type='pre' dialogId=" + dialogId + "  imgArry=" + imgArry
+						+ "  curIndex=" + curIndex + "  class='dialog-image-change pre' title='上一张'></a>";
 			}
 			if (curIndex != imageCount - 1) {
 				html = html
-						+ "<a href='javascript:;' type='next' dialogId="
-						+ dialogId
-						+ "  imgArry="
-						+ imgArry
-						+ "  curIndex="
-						+ curIndex
-						+ "  class='dialog-image-change next' title='下一张'></a>";
+						+ "<a href='javascript:;' type='next' dialogId=" + dialogId + "  imgArry="
+						+ imgArry + "  curIndex=" + curIndex + "  class='dialog-image-change next' title='下一张'></a>";
 			}
 			html = html + "</div>";
 			return html;
 		}
 	},
 	getBrowserType : function() {
-		var browser = navigator.userAgent.indexOf("MSIE") > 0 ? 'IE'
-				: 'others';
+		var browser = navigator.userAgent.indexOf("MSIE") > 0 ? 'IE' : 'others';
 		return browser;
 	},
 	goLogin : function() {
 		var url = ulewo.curUrl;
 		url = encodeURI(url);
-		document.location.href = ulewo.absolutePath
-				+ "/login?redirect=" + url;
+		document.location.href = ulewo.absolutePath + "/login?redirect=" + url;
 	},
 	goRegister : function() {
-		document.location.href = ulewo.absolutePath
-				+ "/register";
+		document.location.href = ulewo.absolutePath + "/register";
 	}
 });
+
 ulewo.emotion_data = [ "[围观]", "[威武]", "[给力]", "[浮云]", "[奥特曼]", "[兔子]", "[熊猫]",
 		"[飞机]", "[冰棍]", "[干杯]", "[给跪了]", "[囧]", "[风扇]", "[呵呵]", "[嘻嘻]", "[哈哈]",
 		"[爱你]", "[晕]", "[泪]", "[馋嘴]", "[抓狂]", "[哼]", "[抱抱]", "[可爱]", "[怒]",
