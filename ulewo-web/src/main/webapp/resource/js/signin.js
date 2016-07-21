@@ -1,7 +1,7 @@
 ulewo.url = {
 	doSignIn : "doSignIn.action",
 	loadCurDaySignIn : "loadCurDaySignIn",
-	loadMySignIn : "loadUserSigin.action"
+	loadMySignIn : "loadUserSignin.action"
 }
 $(function() {
 	ulewo.tag({
@@ -31,7 +31,7 @@ $(function() {
 			async : true, url : ulewo.url.doSignIn, fun : function(res) {
 				setSignInInfo(res);
 				var msg = "2积分已到碗里";
-				if (res.data.continueSigIn) {
+				if (res.data.continueSignIn) {
 					msg = "连续7天签到,10积分已到碗里";
 				}
 				ulewo.tipMsg({
@@ -45,13 +45,9 @@ $(function() {
 
 function loadCurDaySignin(page) {
 	ulewo.curPage = page;
-	$('<div id="loading"><div class="loading-con"><img src="/resource/images/loading.gif"/><span>正在加载.......</span></div></div>').appendTo($("#curDaySignIn"));
+	$('<div id="loading"><div class="loading-con"><img src="../resource/images/loading.gif"/><span>正在加载.......</span></div></div>').appendTo($("#curDaySignIn"));
 	ulewo.ajaxRequest({
-		async : true,
-		url : ulewo.url.loadCurDaySignIn,
-		showLoad : false,
-		data : {pageNo : page},
-		fun : function(res) {
+		async : true, url : ulewo.url.loadCurDaySignIn, showLoad : false, data : {pageNo : page}, fun : function(res) {
 			$("#loading").remove();
 			$("#curDaySignIn").empty();
 			var list = res.data.list;
@@ -62,11 +58,9 @@ function loadCurDaySignin(page) {
 			for (var i = 0, _len = list.length, d; i < _len, d = list[i]; i++) {
 				new SignInItem(d).appendTo($("#curDaySignIn"));
 			}
-			/*ulewo.pagination({
-				pagePanelId : "pager",
-				pageObj : simplePage,
-				fun : loadCurDaySignIn
-			});*/
+			ulewo.pagination({
+				pagePanelId : "pager", pageObj : simplePage, fun : loadCurDaySignIn
+			});
 		}
 	});
 }
@@ -91,12 +85,12 @@ function SignInItem(data) {
 	return item;
 }
 
-//设置签到信息
+// 设置签到信息
 function setSignInInfo(res) {
 	var signInBtn = $("#doSignIn");
 	signInBtn.find("#sign-info .sign-tit").text("已签到");
 	signInBtn.attr("haveSignInType", true);
-	$("#todaySigInCount").text(parseInt($("#todaySigInCount").text()) + 1);
+	$("#todaySignInCount").text(parseInt($("#todaySignInCount").text()) + 1);
 	$("#userSignInCount").text(parseInt($("#userSignInCount").text()) + 1);
 	$("#sign-days").text(parseInt($("#sign-days").text()) + 1);
 	if ($(".no-data").length == 0) {
@@ -107,6 +101,7 @@ function setSignInInfo(res) {
 	}
 }
 
+// 加载我的签到信息
 function loadMySignInInfo(year) {
 	ulewo.ajaxRequest({
 		async : true,

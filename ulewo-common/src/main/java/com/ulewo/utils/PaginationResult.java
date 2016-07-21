@@ -2,7 +2,7 @@ package com.ulewo.utils;
 
 import java.util.List;
 
-public class PaginationResult<T> {
+public class PaginationResult {
 	private int pageTotal;
 
 	private List<?> list;

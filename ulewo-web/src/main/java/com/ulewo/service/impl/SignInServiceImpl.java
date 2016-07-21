@@ -2,6 +2,7 @@ package com.ulewo.service.impl;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -13,10 +14,12 @@ import com.ulewo.exception.BusinessException;
 import com.ulewo.mapper.SignInMapper;
 import com.ulewo.po.enums.DateTimePatternEnum;
 import com.ulewo.po.enums.MarkEnum;
+import com.ulewo.po.enums.PageSize;
 import com.ulewo.po.model.SessionUser;
 import com.ulewo.po.model.SignIn;
 import com.ulewo.po.model.SignInInfo;
 import com.ulewo.po.query.SignInQuery;
+import com.ulewo.service.Calendar4SignIn;
 import com.ulewo.service.SignInService;
 import com.ulewo.service.UserService;
 import com.ulewo.utils.Constants;
@@ -116,6 +119,20 @@ public class SignInServiceImpl implements SignInService{
 	}
 
 	public PaginationResult<SignIn> findCurDaySignIn(SignInQuery query) {
+		
+		query.setCurDate(new Date());
+		int count = this.signInMapper.selectCount(query);
+		int pageSize = PageSize.SIZE20.getSize();
+		int pageNo = 0;
+		if(null!=query.getPageNo()){
+			pageNo = query.getPageNo();
+		}
+		SimplePage page 
+		
+		return null;
+	}
+
+	public List<Calendar4SignIn> findUserSignInsByYear(Integer userId, Integer year) {
 		// TODO Auto-generated method stub
 		return null;
 	}

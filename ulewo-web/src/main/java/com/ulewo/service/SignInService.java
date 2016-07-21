@@ -25,7 +25,12 @@ public interface SignInService {
 	 * @throws BusinessException
 	 */
 	public SignIn doSignIn(SessionUser sessionUser)throws BusinessException;
-
+	
+	/**
+	 * 查询当天所有的签到信息
+	 * @param query
+	 * @return
+	 */
 	public PaginationResult<SignIn> findCurDaySignIn(SignInQuery query);
 	
 	/**
@@ -34,12 +39,5 @@ public interface SignInService {
 	 * @param year
 	 * @return
 	 */
-	/*public List<Calendar4SignIn> findUserSignInsByYear(Integer userId, Integer year);*/
-	
-	/**
-	 * 查询当天所有的签到信息
-	 * @param query
-	 * @return
-	 */
-	/*public PaginationResult<SignIn> findCurDaySignIn(SignInQuery query);*/
+	public List<Calendar4SignIn> findUserSignInsByYear(Integer userId, Integer year);
 }

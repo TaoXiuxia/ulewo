@@ -350,6 +350,7 @@ $.extend(ulewo, {
 		});
 	},
 	
+	// 分页
 	pagination : function(config) {
 		var id = config.pagePanelId;
 		var page = config.pageObj;
