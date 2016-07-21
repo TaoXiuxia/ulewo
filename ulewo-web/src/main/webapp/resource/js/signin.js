@@ -45,7 +45,7 @@ $(function() {
 
 function loadCurDaySignin(page) {
 	ulewo.curPage = page;
-	$('<div id="loading"> <div class="loading-con"><img src="/resource/images/loading.gif"/><span>正在加载.......</span></div></div>').appendTo($("#curDaySignIn"));
+	$('<div id="loading"><div class="loading-con"><img src="/resource/images/loading.gif"/><span>正在加载.......</span></div></div>').appendTo($("#curDaySignIn"));
 	ulewo.ajaxRequest({
 		async : true,
 		url : ulewo.url.loadCurDaySignIn,
