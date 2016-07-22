@@ -355,9 +355,11 @@ $.extend(ulewo, {
 		var id = config.pagePanelId;
 		var page = config.pageObj;
 		var fun = config.fun;
-		var pageTotal = page.pageTotal;
-		var curPageNo = page.page;
-		var countTotal = page.countTotal
+		
+		var pageTotal = page.count;
+		var curPageNo = page.pageNo;
+		var countTotal = page.pageSize
+		
 		var pageNum = 10;
 		var ulPanle = $("<ul class='pagination'></ul>");
 		$("#" + id).empty();

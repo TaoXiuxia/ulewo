@@ -1,5 +1,6 @@
 package com.ulewo.controller;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.ulewo.exception.BusinessException;
 import com.ulewo.po.enums.DateTimePatternEnum;
 import com.ulewo.po.enums.ResponseCode;
+import com.ulewo.po.model.Calendar4SignIn;
 import com.ulewo.po.model.SignIn;
 import com.ulewo.po.model.SignInInfo;
 import com.ulewo.po.query.SignInQuery;
@@ -88,6 +90,12 @@ public class SignInController extends BaseController {
 		return result;
 	}
 	
+	/**
+	 * 获取用户签到信息
+	 * @param session
+	 * @param year
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping(value = "loadUserSignin.action")
 	public AjaxResponse<Map<String, Object>> loadUserSignIn(HttpSession session, Integer year){

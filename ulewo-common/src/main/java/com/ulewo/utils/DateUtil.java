@@ -90,13 +90,20 @@ public class DateUtil {
 		return result;
 	}
 
+	public static Date getDayYYYYMMDD(Date date) {
+		String dateStr = format(date,DateTimePatternEnum.YYYY_MM_DD.getPattern());
+		try {
+			return parse(dateStr, DateTimePatternEnum.YYYY_MM_DD.getPattern());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return date;
+	}
+	
 	public static boolean beforeNowDate(String date) {
 		try {
-			Calendar c = Calendar.getInstance();
-			c.add(Calendar.DAY_OF_MONTH, 1);
-			Date curDate = c.getTime();
-			Date d = parse(date, DateTimePatternEnum.YYYY_MM_DD.getPattern());
-			boolean flag = d.before(curDate);
+			Date d = getDayYYYYMMDD(new Date());
+			boolean flag = new SimpleDateFormat(DateTimePatternEnum.YYYY_MM_DD.getPattern()).parse(date).before(d);
 			return flag;
 		} catch (Exception e) {
 			return false;

@@ -2,6 +2,8 @@ package com.ulewo.po.query;
 
 import java.util.Date;
 
+import com.ulewo.po.model.SimplePage;
+
 public class SignInQuery extends BaseQuery {
 
 	private Integer userId;
@@ -9,6 +11,26 @@ public class SignInQuery extends BaseQuery {
 	private Date startDate;
 	private Date endDate;
 	private Integer year;
+	private Integer pageNo;
+	private SimplePage page;
+	
+	
+
+	public Integer getPageNo() {
+		return pageNo;
+	}
+
+	public void setPageNo(Integer pageNo) {
+		this.pageNo = pageNo;
+	}
+
+	public SimplePage getPage() {
+		return page;
+	}
+
+	public void setPage(SimplePage page) {
+		this.page = page;
+	}
 
 	public Integer getUserId() {
 		return userId;

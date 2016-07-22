@@ -2,60 +2,37 @@ package com.ulewo.utils;
 
 import java.util.List;
 
-public class PaginationResult {
-	private int pageTotal;
+import com.ulewo.po.model.SimplePage;
+
+
+//从2.0代码中复制的，不对
+//public class PaginationResult {
+
+public class PaginationResult<T> {
 
 	private List<?> list;
 
-	private int page;
+	private SimplePage page;
 
-	private int countTotal;
-
-	public PaginationResult(int page, int pageTotal, int countTotal, List<?> list) {
-
-		this.pageTotal = pageTotal;
+	public PaginationResult(SimplePage page, List<?> list) {
 		this.list = list;
 		this.page = page;
-		this.countTotal = countTotal;
-	}
-
-	public PaginationResult() {
-
-	}
-
-	public void setPage(int page) {
-
-		this.page = page;
-	}
-
-	public int getPageTotal() {
-
-		return pageTotal;
-	}
-
-	public void setPageTotal(int pageTotal) {
-
-		this.pageTotal = pageTotal;
 	}
 
 	public List<?> getList() {
-
 		return list;
 	}
 
 	public void setList(List<?> list) {
-
 		this.list = list;
 	}
 
-	public int getPage() {
-
+	public SimplePage getPage() {
 		return page;
 	}
 
-	public int getCountTotal() {
-
-		return countTotal;
+	public void setPage(SimplePage page) {
+		this.page = page;
 	}
-
+	
 }

@@ -34,8 +34,8 @@ public class CustomDateSerializer extends JsonSerializer<Date> {
 	
 	public String firendly_time(Date sourceDate) {
 		Date curDate = new Date();
-		Date sourceDateYMD = getDayYYYYMMDD(sourceDate);
-		Date curDateYMD = getDayYYYYMMDD(curDate);
+		Date sourceDateYMD = DateUtil.getDayYYYYMMDD(sourceDate);
+		Date curDateYMD = DateUtil.getDayYYYYMMDD(curDate);
 
 		// 几天前
 		long daysAgo = (curDateYMD.getTime() - sourceDateYMD.getTime()) / ONE_DAY;
@@ -52,14 +52,6 @@ public class CustomDateSerializer extends JsonSerializer<Date> {
 		} else {
 			return DateUtil.format(sourceDate, DateTimePatternEnum.YYYY_MM_DD.getPattern());
 		}
-	}
-
-	private Date getDayYYYYMMDD(Date date) {
-		Calendar c1 = Calendar.getInstance();
-		c1.setTime(date);
-		Calendar c = Calendar.getInstance();
-		c.set(c1.get(Calendar.YEAR), c1.get(Calendar.MONTH), c1.get(Calendar.DAY_OF_MONTH));
-		return c.getTime();
 	}
 
 	private String getMinAndSec(Date date) {

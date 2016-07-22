@@ -5,7 +5,7 @@ ulewo.url = {
 }
 $(function() {
 	ulewo.tag({
-		id : "tag", contentClass : "tag-content", fun : function(index) {
+		id : "tag", contantClass : "tag-contant", fun : function(index) {
 			if (index == 1) {
 				if (ulewo.user.userId == "") {
 					var url = ulewo.curUrl;
@@ -58,7 +58,7 @@ function loadCurDaySignin(page) {
 				new SignInItem(d).appendTo($("#curDaySignIn"));
 			}
 			ulewo.pagination({
-				pagePanelId : "pager", pageObj : simplePage, fun : loadCurDaySignin
+				pagePanelId : "pager", pageObj : simplePage, fun : loadCurDaySignIn
 			});
 		}
 	});
@@ -70,12 +70,14 @@ function SignInItem(data) {
 					+ "/user/" + data.userId + "'><img  src='"
 					+ ulewo.imageDomain + "upload/" + data.userIcon
 					+ "'></a></div>").appendTo(item);
+	
 	var info = $("<div class='signIn-item-info'></div>").appendTo(item);
 	$("<div class='signIn-item-name'><a href='" + ulewo.absolutePath
 					+ "/user/" + data.userId + "'>" + data.userName
 					+ "</a></div>").appendTo(info);
 	$("<div class='signIn-item-time'>" + data.signTime + "</div>").appendTo(info);
 	$("<div class='clear'></div>").appendTo(item);
+	
 	return item;
 }
 
@@ -127,16 +129,16 @@ function loadMySignInInfo(year) {
 				$("<tr><td colspan='8' class='month'>" + (i + 1) + "月</td></tr>").appendTo(table);
 				$("<tr><td>星期日</td><td>星期一</td><td>星期二</td><td>星期三</td><td>星期四</td><td>星期五</td><td>星期六</td></tr>").appendTo(table);
 				var monthData = months[i];
-				var firstDay = monthData.firstDay;
+				var fristDay = monthData.fristDay;
 				var monthDays = monthData.monthDays;
 				var dayInfos = monthData.dayInfos;
 				var tr = $("<tr></tr>").appendTo(table);
-				for (var j = 1; j < firstDay; j++) {
+				for (var j = 1; j < fristDay; j++) {
 					$("<td>&nbsp;</td>").appendTo(tr);
 				}
 				for (var n = 0; n < monthDays; n++) {
 					var td = "";
-					if (dayInfos[n].signInType) {
+					if (dayInfos[n].signinType) {
 						td = $("<td class='tdsignin'>" + dayInfos[n].day + "</td>").appendTo(tr);
 					} else {
 						if (dayInfos[n].beforeNowDate) {
@@ -148,7 +150,7 @@ function loadMySignInInfo(year) {
 					if (dayInfos[n].curDay) {
 						td.addClass("curDay");
 					}
-					if ((firstDay + n) % 7 == 0) {
+					if ((fristDay + n) % 7 == 0) {
 						tr = $("<tr></tr>").appendTo(table);
 					}
 				}
