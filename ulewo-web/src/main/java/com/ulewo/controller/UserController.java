@@ -138,7 +138,7 @@ public class UserController {
 			sessionUser.setUserIcon(user.getUserIcon());
 			sessionUser.setUserName(user.getUserName());
 			session.setAttribute(Constants.SESSION_USER_KEY, sessionUser);
-
+			
 			// 记住登录状态
 			if (REMEMBERME.equals(rememberMe)) {
 				// 自动登录，保存用户名密码到Cookie
@@ -157,6 +157,7 @@ public class UserController {
 				Cookie cookie = new Cookie(Constants.COOKIE_USER_INFO, null);
 				cookie.setPath("/");
 				cookie.setMaxAge(0);
+				response.addCookie(cookie);
 			}
 		} catch (BusinessException e) {
 			if (null == session.getAttribute(Constants.SESSION_ERROR_LOGIN_COUNT)) {

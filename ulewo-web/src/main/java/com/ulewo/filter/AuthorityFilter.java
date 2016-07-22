@@ -47,6 +47,7 @@ public class AuthorityFilter implements Filter {
 		String req_uri = request.getRequestURI();
 		HttpSession session = request.getSession();
 		String type = req_uri.substring(req_uri.lastIndexOf('.') + 1);
+		
 		// 静态资源忽略
 		if (ArrayUtils.contains(static_ext, type)) {
 			chain.doFilter(req, resp);
@@ -58,7 +59,6 @@ public class AuthorityFilter implements Filter {
 		if(null == sessionUserObj){
 			autoLogin(request);
 		}
-		
 		// 过滤.action后缀的请求
 		if(action_ext.equals(type)){
 			if(null==sessionUserObj){
