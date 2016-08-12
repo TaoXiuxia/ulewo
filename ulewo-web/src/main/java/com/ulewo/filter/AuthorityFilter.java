@@ -11,6 +11,7 @@ import java.util.Map;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -20,7 +21,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.ArrayUtils;
-import org.aspectj.apache.bcel.classfile.Constant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,6 +36,7 @@ import com.ulewo.utils.SpringContextUtil;
 public class AuthorityFilter implements Filter {
 	private final static String[] static_ext = { "js", "css", "jpg", "png", "gif", "html", "ico", "vm", "swf" };
 	private final static String action_ext = "action";
+	private static String absolutePath = null;
 	
 	private Logger logger=LoggerFactory.getLogger(AuthorityFilter.class);
 
@@ -44,6 +45,7 @@ public class AuthorityFilter implements Filter {
 	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response = (HttpServletResponse) resp;
+		ServletContext application = request.getSession().getServletContext();
 		String req_uri = request.getRequestURI();
 		HttpSession session = request.getSession();
 		String type = req_uri.substring(req_uri.lastIndexOf('.') + 1);
@@ -52,6 +54,15 @@ public class AuthorityFilter implements Filter {
 		if (ArrayUtils.contains(static_ext, type)) {
 			chain.doFilter(req, resp);
 			return;
+		}
+		
+		if(absolutePath == null){
+			absolutePath = getRealPath(request);
+			logger.info("absolutePath ==> {}",absolutePath);
+		}
+		
+		if(application.getAttribute(Constants.ABSOLUTEPATH) == null){
+			application.setAttribute(Constants.ABSOLUTEPATH,absolutePath);
 		}
 		
 		Object sessionUserObj = session.getAttribute(Constants.SESSION_USER_KEY);
@@ -80,6 +91,12 @@ public class AuthorityFilter implements Filter {
 		return;
 	}
 
+	private String getRealPath(HttpServletRequest request) {
+		String port = request.getServerPort() == 80 ? "" : (":" + request.getServerPort());
+		String realPath = "http://" + request.getServerName() + port + request.getContextPath();
+		return realPath;
+	}
+	
 	private void autoLogin(HttpServletRequest req) {
 		try {
 			Cookie cookieInfo = getCookieByName(req, Constants.COOKIE_USER_INFO);

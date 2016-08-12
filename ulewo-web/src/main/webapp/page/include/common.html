@@ -19,7 +19,8 @@ ulewo.user={
 		userIcon:"<#if Session["session_user_key"]??>${session_user_key.userIcon}</#if>"
 }
 
-ulewo.absolutePath = "";
+ulewo.absolutePath = "${absolutePath}";
+ulewo.curUrl = window.location.href;
 ulewo.imageDomain = "/"
 </script>
 <script src="../resource/js/common/ulewo.js"></script>

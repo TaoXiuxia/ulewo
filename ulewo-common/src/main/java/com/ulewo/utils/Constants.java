@@ -21,4 +21,7 @@ public class Constants {
 	
 	public static final String COOKIE_USER_INFO = "cookie4UserInfo";
 	
+	public static final String ABSOLUTEPATH = "absolutePath";
+	
+	
 }

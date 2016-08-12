@@ -28,3 +28,55 @@
 		<div class="clear"></div>
 	</div>
 </div>
+
+<div class="banner">
+	<div class="banner-menu">
+		<ul>
+			<li><a href="${absolutePath}">首页</a></li>
+			<li><a href="${absolutePath}/signIn">签到</a></li>
+			<li><a href="${absolutePath}/spitslot">吐槽</a></li>
+			<li><a href="${absolutePath}/exam">在线考试</a></li>
+			<li><a href="${absolutePath}">知识库</a></li>
+			<li><a href="${absolutePath}">讨论区</a></li>
+			<li><a href="${absolutePath}">问答</a></li>
+			<li><a href="${absolutePath}">博客</a></li>
+		</ul>
+	</div>
+</div>
+
+<script>
+	/**
+	 * 菜单模块选中
+	**/
+	$(function(){
+		ulewo.menus = [ulewo.absolutePath+"/","signIn","spitslot","exam"];
+		ulewo.ignoreMenus = ["login","register"];
+		for(var i=0,_len=ulewo.ignoreMenus.length,item;i<_len,item=ulewo.ignoreMenus[i];i++){
+			if(ulewo.curUrl.indexOf(item)!=-1){
+				return;
+			}
+		}
+		for(var i=0,_len=ulewo.menus.length,item;i<_len,item=ulewo.menus[i];i++){
+			//首页单独处理
+			if(item==ulewo.curUrl){
+				$(".banner-menu ul li").eq(0).addClass("active");
+				break;
+			}
+			if(ulewo.curUrl.indexOf(item)!=-1 && i>0){
+				$(".banner-menu ul li").eq(i).addClass("active");
+			}
+		}
+	})
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
